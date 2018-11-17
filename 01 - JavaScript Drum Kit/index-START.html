@@ -58,7 +58,7 @@
   <audio data-key="76" src="sounds/tink.wav"></audio>
 
 <script>
-    window.addEventListener('keydown', function(e) {
+    function playSound(e) {
         const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
         const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
         if(!audio) return; //stop the function from running altogether
@@ -66,16 +66,15 @@
         audio.currentTime = 0; //rewind to the start
         audio.play();
         key.classList.add('playing'); //adds css that makes the letter have a yellow border
-    });
+    }    
     
     function removeTransition(e) {
         if(e.propertyName !== 'transform') return; //skip it if it's not a transform
         this.classList.remove('playing'); //removes the class of playing from the key
     }
     const keys = document.querySelectorAll('.key') //listen on every single key for when the transition end event happens
-    keys.forEach(key => key.addEventListener('transitionend', removeTransition))
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+    window.addEventListener('keydown', playSound);
 </script>
-
-
 </body>
 </html>
