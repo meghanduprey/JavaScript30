@@ -21,7 +21,19 @@
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
-
+    :root {
+      --base: #ffc600;
+      --spacing: 10px;
+      --blur: 10px;
+    }
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+    .hl {
+      color: var(--base);
+    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -43,8 +55,25 @@
       width: 100px;
     }
   </style>
-
   <script>
+    // selects all of the inputs on the page
+    const inputs = document.querySelectorAll('.controls input');
+
+    // create function handleUpdate
+    function handleUpdate() {
+      // append the datatype sizing (px) to the end of the value or append nothing for the color value since it doesn't have "data-sizing" atrribute
+      const suffix = this.dataset.sizing || '';
+
+      // select our entire document (root) and set a property of the "name" from the input to the value that is set by the slider
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+      // console.log(suffix);
+      // console.log(this.name);
+    }
+
+    // listen for change event on each of the inputs and when the change happens we're going to call handleUpdate
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    // listen for the mouse move and then call handleUpdate
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
   </script>
 
 </body>
