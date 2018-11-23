@@ -14,11 +14,11 @@
       font-size: 20px;
       font-weight: 200;
     }
-    
+
     body {
       margin: 0;
     }
-    
+
     *, *:before, *:after {
       box-sizing: inherit;
     }
@@ -26,6 +26,8 @@
     .panels {
       min-height: 100vh;
       overflow: hidden;
+      /* Put display flex in the parent div */
+      display: flex;
     }
 
     .panel {
@@ -43,6 +45,14 @@
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      justify-content: center;
+      align-items: center;
+      /* //each of you distribute the space amoungst yourselves */
+      flex: 1;
+      /* nesting flexboxes so that you can get the words to look right */
+      display: flex;
+      /* makes words go top to bottom vertically center in the middle */
+      flex-direction: column;
     }
 
     .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
@@ -51,11 +61,33 @@
     .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
     .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
 
-    /* Flex Children */
+    /* Flex Items */
     .panel > * {
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
+      /* The flex property is a shorthand property for: flex-grow, flex-shrink, flex-basis
+      flex-grow-how much the item will grow relative to the rest of the flexible items inside the same container.
+      flex-shrink-how the item will shrink relative to the rest of the flexible items inside the same container.
+      flex-basis-pecifies the initial length of a flexible item */
+      flex: 1 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    /* Hide First word  */
+    .panel > *:first-child {transform: translateY(-100%);}
+    .panel > *:first-child { transform: translateY(-100%); }
+    /* Hide Last word  */
+    .panel > *:last-child {
+      transform: translateY(100%);
+    }
+    /* UnHide First word  */
+    .panel.open-active > *:first-child {transform: translateY(0%);}
+    .panel.open-active > *:last-child { transform: translateY(0%); }
+    /* UnHide Last word  */
+    .panel > *:last-child {
+      transform: translateY(100%);
     }
 
     .panel p {
@@ -64,12 +96,14 @@
       text-shadow: 0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
       font-size: 2em;
     }
-    
+
     .panel p:nth-child(2) {
       font-size: 4em;
     }
 
     .panel.open {
+      /* panel will take 5x the amount of room */
+      flex: 5;
       font-size: 40px;
     }
 
@@ -105,7 +139,24 @@
   </div>
 
   <script>
+    // listen on the class of panel
+    const panels = document.querySelectorAll('.panel');
 
+    // function toggles class of "open"
+    function toggleOpen() {
+      this.classList.toggle('open');
+    }
+
+    function toggleActive(e) {
+      console.log(e.propertyName);
+      if(e.propertyName.includes('flex')) {
+        this.classList.toggle('open-active');
+      }
+    }
+
+    // on each of the panels listen for a click
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
   </script>
 
 
