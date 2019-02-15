@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Flex Panels 💪</title>
   <link href='https://fonts.googleapis.com/css?family=Amatic+SC' rel='stylesheet' type='text/css'>
 </head>
+
 <body>
   <style>
     html {
@@ -19,75 +21,86 @@
       margin: 0;
     }
 
-    *, *:before, *:after {
+    *,
+    *:before,
+    *:after {
       box-sizing: inherit;
     }
 
     .panels {
       min-height: 100vh;
       overflow: hidden;
-      /* Put display flex in the parent div */
       display: flex;
     }
 
     .panel {
       background: #6B0F9C;
-      box-shadow: inset 0 0 0 5px rgba(255,255,255,0.1);
+      box-shadow: inset 0 0 0 5px rgba(255, 255, 255, 0.1);
       color: white;
       text-align: center;
       align-items: center;
       /* Safari transitionend event.propertyName === flex */
       /* Chrome + FF transitionend event.propertyName === flex-grow */
       transition:
-        font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
-        flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+        font-size 0.7s cubic-bezier(0.61, -0.19, 0.7, -0.11),
+        flex 0.7s cubic-bezier(0.61, -0.19, 0.7, -0.11),
         background 0.2s;
       font-size: 20px;
       background-size: cover;
       background-position: center;
+      flex: 1;
+      /* each panel distrubutes evenly horizontally */
       justify-content: center;
       align-items: center;
-      /* //each of you distribute the space amoungst yourselves */
-      flex: 1;
-      /* nesting flexboxes so that you can get the words to look right */
       display: flex;
-      /* makes words go top to bottom vertically center in the middle */
       flex-direction: column;
     }
 
-    .panel1 { background-image:url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500); }
-    .panel2 { background-image:url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500); }
-    .panel3 { background-image:url(https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&w=1500&h=1500&fit=crop&s=967e8a713a4e395260793fc8c802901d); }
-    .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
-    .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
+    .panel1 {
+      background-image: url(https://source.unsplash.com/gYl-UtwNg_I/1500x1500);
+    }
 
-    /* Flex Items */
-    .panel > * {
+    .panel2 {
+      background-image: url(https://source.unsplash.com/rFKUFzjPYiQ/1500x1500);
+    }
+
+    .panel3 {
+      background-image: url(https://images.unsplash.com/photo-1465188162913-8fb5709d6d57?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&cs=tinysrgb&w=1500&h=1500&fit=crop&s=967e8a713a4e395260793fc8c802901d);
+    }
+
+    .panel4 {
+      background-image: url(https://source.unsplash.com/ITjiVXcwVng/1500x1500);
+    }
+
+    .panel5 {
+      background-image: url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500);
+    }
+
+    /* Flex Children */
+    .panel>* {
       margin: 0;
       width: 100%;
       transition: transform 0.5s;
-      /* The flex property is a shorthand property for: flex-grow, flex-shrink, flex-basis
-      flex-grow-how much the item will grow relative to the rest of the flexible items inside the same container.
-      flex-shrink-how the item will shrink relative to the rest of the flexible items inside the same container.
-      flex-basis-pecifies the initial length of a flexible item */
       flex: 1 0 auto;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    /* Hide First word  */
-    .panel > *:first-child {transform: translateY(-100%);}
-    .panel > *:first-child { transform: translateY(-100%); }
-    /* Hide Last word  */
-    .panel > *:last-child {
+
+    .panel>*:first-child {
+      transform: translateY(-100%);
+    }
+
+    .panel>*:last-child {
       transform: translateY(100%);
     }
-    /* UnHide First word  */
-    .panel.open-active > *:first-child {transform: translateY(0%);}
-    .panel.open-active > *:last-child { transform: translateY(0%); }
-    /* UnHide Last word  */
-    .panel > *:last-child {
-      transform: translateY(100%);
+
+    .panel.open-active>*:first-child {
+      transform: translateY(0);
+    }
+
+    .panel.open-active>*:last-child {
+      transform: translateY(0);
     }
 
     .panel p {
@@ -102,11 +115,10 @@
     }
 
     .panel.open {
-      /* panel will take 5x the amount of room */
-      flex: 5;
       font-size: 40px;
+      /* when it has a class of open it's going to take 5x the amount of room as the rest of them */
+      flex: 5;
     }
-
   </style>
 
 
@@ -139,27 +151,24 @@
   </div>
 
   <script>
-    // listen on the class of panel
-    const panels = document.querySelectorAll('.panel');
+    const panels = document.querySelectorAll('.panel'); //grabs all the panels - gives a nodelist of ALL the panels
 
-    // function toggles class of "open"
     function toggleOpen() {
       this.classList.toggle('open');
     }
 
     function toggleActive(e) {
-      console.log(e.propertyName);
-      if(e.propertyName.includes('flex')) {
+      if (e.propertyName.includes('flex')) {
         this.classList.toggle('open-active');
+
       }
     }
-
-    // on each of the panels listen for a click
-    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
-    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen)); //for each panel listen for a click, when it clicks do toggleOpen
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive)); //listen for transitionend event and toggle
   </script>
 
 
 
 </body>
+
 </html>
